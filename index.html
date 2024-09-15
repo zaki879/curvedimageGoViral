@@ -4328,24 +4328,33 @@
                                                     <img data-gatsby-image-ssr="" draggable="false" data-main-image="" style="opacity:0; width: 100%; height: auto; max-width: 1460px; object-fit: contain;" sizes="(min-width: 1460px) 1460px, 100vw" decoding="async" loading="eager" src="https://cdn.prod.website-files.com/66df7e1c139304527e5f7f71/66e6aef0848a846c1871eb08_main.png" alt="The amazing story"/>
                                                 </noscript>
                                                 <script type="module">
-                                                    t = "undefined" != typeof HTMLImageElement && "loading"in HTMLImageElement.prototype;
-                                                    if (t) {
-                                                        const t = document.querySelectorAll("img[data-main-image]");
-                                                        for (let e of t) {
-                                                            e.dataset.src && (e.setAttribute("src", e.dataset.src),
-                                                            e.removeAttribute("data-src")),
-                                                            e.dataset.srcset && (e.setAttribute("srcset", e.dataset.srcset),
-                                                            e.removeAttribute("data-srcset"));
-                                                            const t = e.parentNode.querySelectorAll("source[data-srcset]");
-                                                            for (let e of t)
-                                                                e.setAttribute("srcset", e.dataset.srcset),
-                                                                e.removeAttribute("data-srcset");
-                                                            e.complete && (e.style.opacity = 1,
-                                                            e.parentNode.parentNode.querySelector("[data-placeholder-image]").style.opacity = 0)
+                                                    document.addEventListener("DOMContentLoaded", function() {
+                                                        const supportsLazyLoad = "loading" in HTMLImageElement.prototype;
+                                                        if (supportsLazyLoad) {
+                                                            const mainImages = document.querySelectorAll("img[data-main-image]");
+                                                            mainImages.forEach(img => {
+                                                                img.addEventListener('load', function() {
+                                                                    img.style.opacity = 1;
+                                                                    const placeholder = img.parentNode.parentNode.querySelector("[data-placeholder-image]");
+                                                                    if (placeholder) {
+                                                                        placeholder.style.opacity = 0;
+                                                                    }
+                                                                });
+                                                                img.dataset.src && (img.setAttribute("src", img.dataset.src),
+                                                                img.removeAttribute("data-src"));
+                                                                img.dataset.srcset && (img.setAttribute("srcset", img.dataset.srcset),
+                                                                img.removeAttribute("data-srcset"));
+                                                                const sources = img.parentNode.querySelectorAll("source[data-srcset]");
+                                                                sources.forEach(source => {
+                                                                    source.setAttribute("srcset", source.dataset.srcset);
+                                                                    source.removeAttribute("data-srcset");
+                                                                });
+                                                            });
                                                         }
-                                                    }
+                                                    });
                                                 </script>
                                             </div>
+                                            
                                             
                                             <div data-gatsby-image-wrapper="" class="gatsby-image-wrapper gatsby-image-wrapper-constrained AboutHerostyled__CoverRight-sc-p4x6na-1 hERxqP">
                                                 <div style="max-width:1200px;display:block">
